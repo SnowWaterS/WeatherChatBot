@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>
+			TEST
+		</title>
+	</head>
+	<body>
+		<h1> Test Page </h1>
+		<!--
+		<form action='message' method='post'>
+			<input name='message' type='text'></input>
+			<input type='submit'></input>
+		</form>
+		-->
+		<button id='button'>Click!</button>
+		<p id='text'></p>
+	</body>
+	<script>
+	
+	const button = document.getElementById('button');
+	button.addEventListener('click', function(e) {
+		  console.log('button was clicked');
+
+		fetch('/message', 
+			{method: 'POST',
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+				},
+				body: JSON.stringify({message: 'TEST'})
+			})
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function (result) {
+			var paragraph = document.getElementById('text');
+			var text = document.createTextNode(result.message);
+			paragraph.innerHTML='';
+			paragraph.appendChild(text);
+			console.log(result);
+
+		})
+		.catch (function (error) {
+			console.log('Request failed', error);
+		})
+	});
+	</script>
+</html>
