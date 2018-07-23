@@ -30,17 +30,19 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/keyboard', function(req, res) {
+	res.json({type:'text'});
+});
+
 weather.setLang('en');
 weather.setCity('Dublin');
 weather.setUnits('metric');
 weather.setAPPID('---APPID---');
 
 app.post('/message', function(req, res){
-	var message = '';
 	weather.getAllWeather(function(err, JSONObj){
-		console.log(JSONObj);
-		message = message + JSONObj.main.temp;
-		console.log(message);
+		var tempInfo = JSONObj.main.temp;
+		message = {text:tempInfo.toString()};
 		res.json({message:message});
 	});
 });
