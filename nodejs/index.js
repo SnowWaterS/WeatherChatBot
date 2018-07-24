@@ -12,8 +12,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
 
-var weather = require('openweather-apis');
-
 global.app = express();
 global.async = require('async');
 
@@ -34,18 +32,7 @@ app.get('/keyboard', function(req, res) {
 	res.json({type:'text'});
 });
 
-weather.setLang('en');
-weather.setCity('Dublin');
-weather.setUnits('metric');
-weather.setAPPID('---APPID---');
-
-app.post('/message', function(req, res){
-	weather.getAllWeather(function(err, JSONObj){
-		var tempInfo = JSONObj.main.temp;
-		message = {text:tempInfo.toString()};
-		res.json({message:message});
-	});
-});
+require('./libs/message')(app);
 
 var port = app.get('port');
 console.log('Listen port: %d', port);
